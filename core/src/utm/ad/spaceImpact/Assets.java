@@ -39,8 +39,8 @@ public class Assets {
 	}
 	
 	public static void load () {
-		backgroundFirstMenu = loadTexture("data/Guest.png");
-		backgroundRegionFirstMenu = new TextureRegion(backgroundFirstMenu, 0, 0, 320, 480);
+		backgroundFirstMenu = loadTexture("data/Guest.png");	//load image to texture
+		backgroundRegionFirstMenu = new TextureRegion(backgroundFirstMenu, 0, 0, 320, 480);		//get the region from the texture
 		
 		backgroundMenu = loadTexture("data/MainMenu.png");
 		backgroundRegionMenu = new TextureRegion(backgroundMenu, 0, 0, 320, 480);
