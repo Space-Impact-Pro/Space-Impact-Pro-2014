@@ -7,14 +7,26 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import utm.ad.spaceImpact.World.WorldListener;;
+
 
 public class GameScreen extends ScreenAdapter {
+	
+	static final int GAME_READY = 0;
+	static final int GAME_RUNNING = 1;
+	static final int GAME_PAUSED = 2;
+	static final int GAME_LEVEL_END = 3;
+	static final int GAME_OVER = 4;
+	
 	SpaceImpactPro game;
+	
+	int state;
 	OrthographicCamera guiCam;
-	Rectangle backBounds;
 	Vector3 touchPoint;
-	String[] highScores;
-	float xOffset = 0;
+	World world;
+	WorldListener listener;
+	WorldRenderer renderer;
+	Rectangle backBounds;
 
 	public GameScreen (SpaceImpactPro game) {
 		this.game = game;
@@ -25,12 +37,7 @@ public class GameScreen extends ScreenAdapter {
 		touchPoint = new Vector3();
 		
 		backBounds = new Rectangle(160 - 150, 240 , 300, 32);
-//		highScores = new String[5];
-//		for (int i = 0; i < 5; i++) {
-//			highScores[i] = i + 1 + ". " + Settings.highscores[i];
-//			xOffset = Math.max(Assets.font.getBounds(highScores[i]).width, xOffset);
-//		}
-//		xOffset = 160 - xOffset / 2 + Assets.font.getSpaceWidth() / 2;
+
 	}
 
 	public void update () {

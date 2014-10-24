@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-
+//todo update ship based on Ship.java
 public class SelectShipScreen extends ScreenAdapter {
 	SpaceImpactPro game;
 	OrthographicCamera guiCam;

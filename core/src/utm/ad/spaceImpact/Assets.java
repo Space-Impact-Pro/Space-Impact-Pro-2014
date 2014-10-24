@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.Texture;
 //import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+//todo import all assets, and make texture map instead of single page of background
 public class Assets {
+<<<<<<< HEAD
 //	public static Texture background;
 //	public static TextureRegion backgroundRegion;
 //	
 //	public static Texture background2;
 //	public static TextureRegion backgroundRegion2
     
+=======
+>>>>>>> refs/heads/newGameScreen
 	
 	public static Texture backgroundFirstMenu;
 	public static TextureRegion backgroundRegionFirstMenu;
@@ -53,10 +57,6 @@ public class Assets {
 		
 		backgroundGameScreen = loadTexture("data/NewGameNext.png");
 		backgroundRegionGameScreen = new TextureRegion(backgroundGameScreen,  0, 0, 320, 480);
-		
-//		backgroundShipSelect1 = loadTexture("data/SelectShip-1.png");
-//		backgroundRegionShipSelect1 = new TextureRegion(backgroundShipSelect1, 0, 0, 320, 480);
-
 		
 	}
 	

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-
+//todo: delete this file...
 public class SelectShip1Screen extends ScreenAdapter {
 	SpaceImpactPro game;
 	OrthographicCamera guiCam;
