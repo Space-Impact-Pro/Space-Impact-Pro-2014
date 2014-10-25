@@ -9,15 +9,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 //todo import all assets, and make texture map instead of single page of background
 public class Assets {
-<<<<<<< HEAD
+
 //	public static Texture background;
 //	public static TextureRegion backgroundRegion;
 //	
 //	public static Texture background2;
 //	public static TextureRegion backgroundRegion2
     
-=======
->>>>>>> refs/heads/newGameScreen
 	
 	public static Texture backgroundFirstMenu;
 	public static TextureRegion backgroundRegionFirstMenu;
@@ -37,6 +35,11 @@ public class Assets {
 	public static Texture backgroundGameScreen;
 	public static TextureRegion backgroundRegionGameScreen;
 	
+	public static Texture background;
+	public static TextureRegion backgroundRegion;
+	
+	public static Texture ship_image;
+	public static TextureRegion ship_imagebg;
 	
 	public static Texture loadTexture (String file) {
 		return new Texture(Gdx.files.internal(file));
@@ -57,6 +60,13 @@ public class Assets {
 		
 		backgroundGameScreen = loadTexture("data/NewGameNext.png");
 		backgroundRegionGameScreen = new TextureRegion(backgroundGameScreen,  0, 0, 320, 480);
+		
+		background = loadTexture("data/GameBG1.jpg");
+		backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
+		
+		///// ship implementation in game screen////
+		ship_image = loadTexture("data/ship_box.png");
+		ship_imagebg = new TextureRegion(ship_image,  0, 0, 32, 32);
 		
 	}
 	

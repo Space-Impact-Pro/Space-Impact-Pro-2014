@@ -24,6 +24,7 @@ public class World {
 	public static final int WORLD_STATE_NEXT_LEVEL = 1;
 	public static final int WORLD_STATE_GAME_OVER = 2;
 	
+	public final Ship ship;
 	public final WorldListener listener;
 	
 	public float distanceSoFar;
@@ -31,17 +32,19 @@ public class World {
 	public int state;
 	
 	public World (WorldListener listener){
+		this.ship = new Ship(5,1);
 		this.listener=listener;
 		
 		this.score =0;
 		this.state = WORLD_STATE_RUNNING;
 	}
 	
-	public void update(){
-		updateShip();//todo add the movement variable
+	public void update(float deltaTime, float velocityX){
+		updateShip(deltaTime, velocityX);//todo add the movement variable
 	}
 	
-	public void updateShip(){
-		
+	public void updateShip(float deltaTime, float velocityX){
+		ship.velocity.x = velocityX;
+		ship.update(deltaTime);
 	}
 }
