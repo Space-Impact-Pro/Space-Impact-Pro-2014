@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 //import com.badlogic.gdx.audio.Music;
 //import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 //todo import all assets, and make texture map instead of single page of background
@@ -38,8 +38,15 @@ public class Assets {
 	public static Texture background;
 	public static TextureRegion backgroundRegion;
 	
+	public static Texture menuBackground;
+	public static TextureRegion menuBackgroundRegion;
+	
 	public static Texture ship_image;
-	public static TextureRegion ship_imagebg;
+	public static TextureRegion ship_imageRegion;
+	
+	
+	public static BitmapFont font;
+	
 	
 	public static Texture loadTexture (String file) {
 		return new Texture(Gdx.files.internal(file));
@@ -64,9 +71,16 @@ public class Assets {
 		background = loadTexture("data/GameBG1.jpg");
 		backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
 		
-		///// ship implementation in game screen////
-		ship_image = loadTexture("data/ship_box.png");
-		ship_imagebg = new TextureRegion(ship_image,  0, 0, 32, 32);
+		menuBackground = loadTexture("data/background2.png");
+		menuBackgroundRegion = new TextureRegion(menuBackground, 0, 0, 320, 480);
+		
+		loadShip(0);
+		
+		font = new BitmapFont(Gdx.files.internal("font/calibri.fnt"), Gdx.files.internal("font/calibri.png"), false);
+		
+		///// ship implementation in game screen////  --->> moved to method below
+//		ship_image = loadTexture("data/ship_box.png");
+//		ship_imageRegion = new TextureRegion(ship_image,  0, 0, 32, 32);
 		
 	}
 	
@@ -80,6 +94,17 @@ public class Assets {
 			
 			backgroundRegionShipSelect = new TextureRegion(backgroundShipSelect, 0, 0, 320, 480);
 		
+	}
+	
+	public static void loadShip(int index){
+		if (index ==0)
+			ship_image = loadTexture("data/ship/ship1.png");
+		else if (index ==1)
+			ship_image = loadTexture("data/ship/ship2.png");
+		else if (index ==2)
+			ship_image = loadTexture("data/ship/ship3.png");
+		
+		ship_imageRegion = new TextureRegion(ship_image, 0, 0, 32, 32);
 	}
 	
 	

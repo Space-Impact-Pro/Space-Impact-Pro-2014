@@ -6,57 +6,43 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import java.util.*;
+import java.io.*;
 
-//todo: delete this file...
-public class SelectShip1Screen extends ScreenAdapter {
+
+public class HighScoreScreen extends ScreenAdapter {
 	SpaceImpactPro game;
 	OrthographicCamera guiCam;
 	Rectangle backBounds;
-	Rectangle ship1Bounds;
-	Rectangle ship2Bounds;
-	Rectangle ship3Bounds;
 	Vector3 touchPoint;
-	String[] highScores;
+	ArrayList <Score>highScores;
 	float xOffset = 0;
+	HighscoreManager scores;
+	String [] strHighScore;
 
-	public SelectShip1Screen (SpaceImpactPro game) {
+	public HighScoreScreen (SpaceImpactPro game) {
 		this.game = game;
+		
+		scores = new HighscoreManager();
 
 		guiCam = new OrthographicCamera(320, 480);
 		guiCam.position.set(320 / 2, 480 / 2, 0);
 		backBounds = new Rectangle(0, 0, 64, 64);
-		
-		ship1Bounds = new Rectangle(60, 200, 50, 50);
-		ship2Bounds = new Rectangle(60 + 140, 200, 50, 50);
-		ship3Bounds = new Rectangle(60 + 70, 120, 50, 50);
-		
 		touchPoint = new Vector3();
-
+		highScores = scores.getScores();
+		
+//		highScores = new String[5];
+//		for (int i = 0; i < 5; i++) {
+//			highScores[i] = i + 1 + ". " + Settings.highscores[i];
+//			xOffset = Math.max(Assets.font.getBounds(highScores[i]).width, xOffset);
+//		}
 //		xOffset = 160 - xOffset / 2 + Assets.font.getSpaceWidth() / 2;
 	}
 
 	public void update () {
 		if (Gdx.input.justTouched()) {
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			//ship Selection
-			if (ship1Bounds.contains(touchPoint.x, touchPoint.y)){
-				Assets.loadShipSelect(0);
-				game.setScreen(new SelectShipScreen(game));
-				Assets.loadShip(0);
-				return;
-			}
-			if (ship2Bounds.contains(touchPoint.x, touchPoint.y)){
-				Assets.loadShipSelect(1);
-				game.setScreen(new SelectShipScreen(game));
-				Assets.loadShip(1);
-				return;
-			}
-			if (ship3Bounds.contains(touchPoint.x, touchPoint.y)){
-				Assets.loadShipSelect(2);
-				game.setScreen(new SelectShipScreen(game));
-				Assets.loadShip(2);
-				return;
-			}
+
 			if (backBounds.contains(touchPoint.x, touchPoint.y)) {
 				//Assets.playSound(Assets.clickSound);
 				game.setScreen(new MainMenuScreen(game));
@@ -73,13 +59,19 @@ public class SelectShip1Screen extends ScreenAdapter {
 		game.batcher.setProjectionMatrix(guiCam.combined);
 		game.batcher.disableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundRegionShipSelect, 0, 0, 320, 480);
+		game.batcher.draw(Assets.menuBackgroundRegion, 0, 0, 320, 480);
 		game.batcher.end();
 
-//		game.batcher.enableBlending();
-//		game.batcher.begin();
+		game.batcher.enableBlending();
+		game.batcher.begin();
 //		game.batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
-
+		float y = 230;
+		
+		for (int i = 1; i >= 0; i--) {
+			String a = "           "+highScores.get(i).getNaam()+"   "+highScores.get(i).getScore();
+			Assets.font.draw(game.batcher,a , xOffset, y);
+			y += Assets.font.getLineHeight();
+		}
 //		float y = 230;
 //		for (int i = 4; i >= 0; i--) {
 //			Assets.font.draw(game.batcher, highScores[i], xOffset, y);
@@ -87,7 +79,7 @@ public class SelectShip1Screen extends ScreenAdapter {
 //		}
 
 //		game.batcher.draw(Assets.arrow, 0, 0, 64, 64);
-//		game.batcher.end();
+		game.batcher.end();
 	}
 
 	@Override
@@ -96,5 +88,3 @@ public class SelectShip1Screen extends ScreenAdapter {
 		draw();
 	}
 }
-
-//

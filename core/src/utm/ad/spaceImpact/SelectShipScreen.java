@@ -42,16 +42,19 @@ public class SelectShipScreen extends ScreenAdapter {
 			if (ship1Bounds.contains(touchPoint.x, touchPoint.y)){
 				Assets.loadShipSelect(0);
 				game.setScreen(new SelectShip1Screen(game));
+				Assets.loadShip(0);
 				return;
 			}
 			if (ship2Bounds.contains(touchPoint.x, touchPoint.y)){
 				Assets.loadShipSelect(1);
 				game.setScreen(new SelectShip1Screen(game));
+				Assets.loadShip(1);
 				return;
 			}
 			if (ship3Bounds.contains(touchPoint.x, touchPoint.y)){
 				Assets.loadShipSelect(2);
 				game.setScreen(new SelectShip1Screen(game));
+				Assets.loadShip(2);
 				return;
 			}
 			if (backBounds.contains(touchPoint.x, touchPoint.y)) {

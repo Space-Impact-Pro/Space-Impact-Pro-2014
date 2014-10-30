@@ -3,10 +3,14 @@ package utm.ad.spaceImpact;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.Application.ApplicationType;
+
+
 
 
 import utm.ad.spaceImpact.World.WorldListener;;
@@ -29,6 +33,8 @@ public class GameScreen extends ScreenAdapter {
 	WorldListener worldListener;
 	WorldRenderer renderer;
 	Rectangle backBounds;
+	Rectangle moveLeftRegion;
+	Rectangle moveRightRegion;
 
 	public GameScreen (SpaceImpactPro game) {
 		this.game = game;
@@ -43,6 +49,8 @@ public class GameScreen extends ScreenAdapter {
 		world = new World(worldListener);
 		renderer = new WorldRenderer(game.batcher, world);
 		
+		moveLeftRegion = new Rectangle(0,0, 40,40);
+		moveRightRegion = new Rectangle(320-40,0, 40 ,40);
 		
 		backBounds = new Rectangle(160 - 150, 240 , 300, 32);
 
@@ -64,9 +72,36 @@ public class GameScreen extends ScreenAdapter {
 	
 	private void updateRunning (float deltaTime){
 		float velocity = 0;
+		ApplicationType appType = Gdx.app.getType();
 		
+		if (appType == ApplicationType.Android)
+		{
+			boolean activeTouch = false;
+			if (Gdx.input.isTouched()) {
+				guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+				if (moveLeftRegion.contains(touchPoint.x, touchPoint.y)) {
+//					Assets.playSound(Assets.clickSound);
+//					state = GAME_PAUSED;
+//					return;
+					velocity = -5f;
+				}
+				if (moveRightRegion.contains(touchPoint.x, touchPoint.y)) {
+//					Assets.playSound(Assets.clickSound);
+//					state = GAME_PAUSED;
+//					return;
+					velocity = 5f;
+				}
+				activeTouch = true;
+			}
+			else{
+				activeTouch = false;
+			}
+		}
+		else{
 		if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) velocity = -5f;
 		if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) velocity = 5f;
+		}
 		world.update(deltaTime, velocity);
 		
 	}

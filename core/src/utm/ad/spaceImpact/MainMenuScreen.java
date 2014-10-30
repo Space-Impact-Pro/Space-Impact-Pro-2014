@@ -24,6 +24,8 @@ public class MainMenuScreen extends ScreenAdapter {
 	Rectangle newGameBound;
 	Rectangle selectModeBound;
 	Rectangle selectShipBound;
+	Rectangle highScoreBound;
+
 	//Rectangle gameExit;
 	Vector3 touchPoint;
 	
@@ -35,7 +37,7 @@ public class MainMenuScreen extends ScreenAdapter {
 		newGameBound = new Rectangle(160 - 150, 240 + 18, 300, 32);  //setting region for touch //(kiri. bawah, width, height)
 		selectShipBound = new Rectangle(160 - 150, 240 - 18, 300, 32);
 		selectModeBound = new Rectangle(160 - 150, 240 - 18 - 36, 300, 32);
-		
+		highScoreBound = new Rectangle(160 - 150, 175-30, 300, 32);
 		
 		touchPoint = new Vector3();
 	}
@@ -57,6 +59,12 @@ public class MainMenuScreen extends ScreenAdapter {
 			if (selectModeBound.contains(touchPoint.x, touchPoint.y)) {
 //				Assets.playSound(Assets.clickSound);
 				game.setScreen(new SelectModeScreen(game));
+				return;
+			}
+			
+			if (highScoreBound.contains(touchPoint.x, touchPoint.y)) {
+//				Assets.playSound(Assets.clickSound);
+				game.setScreen(new HighScoreScreen(game));
 				return;
 			}
 //			if (soundBounds.contains(touchPoint.x, touchPoint.y)) {

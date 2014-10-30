@@ -22,7 +22,7 @@ public class FirstMenuScreen extends ScreenAdapter {
 		
 		guiCam = new OrthographicCamera(320, 480);
 		guiCam.position.set(320 / 2, 480 / 2, 0);
-		playAsGuestBounds = new Rectangle(160 - 150, 230 , 300, 32);  //setting region for touch //(kiri. bawah, width, height)
+		playAsGuestBounds = new Rectangle(160 - 150, 200 , 300, 32);  //setting region for touch //(kiri. bawah, width, height)
 		
 		
 		touchPoint = new Vector3();

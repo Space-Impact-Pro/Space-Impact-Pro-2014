@@ -13,18 +13,30 @@ public class SpaceImpactPro extends Game {
 		public SpriteBatch batcher;
 		
 		@Override
-		public void create () {
+		public void create () 
+		{
 			batcher = new SpriteBatch();
 //			Settings.load();
 			Assets.load();  //lepas ni add
+			HighscoreManager highscore = new HighscoreManager();
+			highscore.addScore("Akram",230);
 			setScreen(new FirstMenuScreen(this));
 		}
-		
+		///score
+		public void highscore(String name, int score)
+		{
+	        HighscoreManager highscore = new HighscoreManager();
+	        highscore.addScore(name,score);
+	        highscore.addScore("Muin",230);
+	        
+	        System.out.print(highscore.getHighscoreString());
+	    }
 		@Override
 		public void render() {
 			super.render();
 		}
 	
+		
 	
 	/*
 	SpriteBatch batch;

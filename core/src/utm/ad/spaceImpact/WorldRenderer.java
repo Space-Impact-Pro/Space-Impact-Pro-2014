@@ -44,12 +44,13 @@ public class WorldRenderer {
 	}
 	
 	private void renderShip () {
-		TextureRegion keyFrame = Assets.ship_imagebg;
-
+		TextureRegion keyFrame = Assets.ship_imageRegion;
+//		place the ship on the gamescreen
 		float side = world.ship.velocity.x < 0 ? -1 : 1;
 		if (side < 0)
 			batch.draw(keyFrame, world.ship.position.x + 0.5f, world.ship.position.y - 0.5f, side * 1, 1);
 		else
 			batch.draw(keyFrame, world.ship.position.x - 0.5f, world.ship.position.y - 0.5f, side * 1, 1);
+		//batch.draw(keyFrame, side, side, side, side);
 	}
 }
