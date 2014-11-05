@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 import utm.ad.spaceImpact.World.WorldListener;
 
@@ -41,10 +43,12 @@ public class GameScreen extends ScreenAdapter {
 	
 	private String name;
 	private boolean doneInput;
+	private boolean done = false;
 
 
 	public GameScreen (SpaceImpactPro game) {
 		this.game = game;
+		done = false;
 		
 		state = GAME_READY;
 
@@ -175,33 +179,46 @@ public class GameScreen extends ScreenAdapter {
 	
 	private void updateGameOver () {
 				
-		if (Gdx.input.justTouched()) {
-			
-			String title = "Name";
-			String initialText = "Name here";
-			
-			Gdx.input.getTextInput(new TextInputListener() {
+		//if (Gdx.input.justTouched()) {
+		
+			if(!done){
+				done = true;
+				String title = "Name";
+				String initialText = "Name here";
 				
-				String message;
-				
-	            
-	            @Override
-	            public void input(String text) {
-	            name = text;
-	            doneInput =true;
-	            }
-	           
-	            @Override
-	            public void canceled() {
-	            doneInput =true;
-	            }
-	     }, title, initialText);
+				Gdx.input.getTextInput(new TextInputListener() {
+					
+					String message;
+					
+		            
+		            @Override
+		            public void input(String text) {
+		            name = text;
+		            doneInput =true;
+		            }
+		           
+		            @Override
+		            public void canceled() {
+		            doneInput =true;
+		            }
+		     }, title, initialText);
 			
 		}
+		//}
 		if (doneInput){
+			
 			SpaceImpactPro.highscore.addScore(name, (int)score);
+			if (Gdx.input.justTouched()){
 			game.setScreen(new MainMenuScreen(game));
-			doneInput = false;
+	    	doneInput = false;
+			//Timer.schedule(new Task(){
+			    //@Override
+			    //public void run() {
+			    	
+			    }
+			//}, 2);
+			
+			
 		}
 	}
 	
@@ -210,7 +227,9 @@ public class GameScreen extends ScreenAdapter {
 	}
 	
 	private void presentGameOver(){
-		Assets.font.draw(game.batcher,"GAME OVER" , 30, 350);
+		Assets.font.draw(game.batcher,"GAME OVER" , 60, 350);
+		if (doneInput)
+			Assets.font.draw(game.batcher,name +"    "+score , 60, 310);
 	}
 
 	public void draw () {
@@ -243,20 +262,6 @@ public class GameScreen extends ScreenAdapter {
 		game.batcher.draw(Assets.backgroundRegionGameScreen, 0, 0, 320, 480);
 		game.batcher.end();
 		*/
-		
-		
-//		game.batcher.enableBlending();
-//		game.batcher.begin();
-//		game.batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
-
-//		float y = 230;
-//		for (int i = 4; i >= 0; i--) {
-//			Assets.font.draw(game.batcher, highScores[i], xOffset, y);
-//			y += Assets.font.getLineHeight();
-//		}
-
-//		game.batcher.draw(Assets.arrow, 0, 0, 64, 64);
-//		game.batcher.end();
 	}
 	
 	
