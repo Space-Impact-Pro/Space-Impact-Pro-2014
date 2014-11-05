@@ -29,11 +29,20 @@ public class Ship extends DynamicGameObject {
 		stateTime += deltaTime;
 		if (position.x <0.5) position.x =0.5f;
 		if (position.x > World.WORLD_WIDTH-0.5) position.x =  World.WORLD_WIDTH- 0.5f;
+		if (position.y < 0.5) position.y = 0.5f;
+		if (position.y > World.WORLD_HEIGHT/20-0.5) position.y =  World.WORLD_HEIGHT/20- 0.5f;
 	}
 	
 	public void fire(){
 		
 	}
 	
+	public float getPositionX(){
+		return position.x;
+	}
+	
+	public float getPositionY(){
+		return position.y;
+	}
 	
 }

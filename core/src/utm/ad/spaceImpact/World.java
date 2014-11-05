@@ -39,12 +39,17 @@ public class World {
 		this.state = WORLD_STATE_RUNNING;
 	}
 	
-	public void update(float deltaTime, float velocityX){
-		updateShip(deltaTime, velocityX);//todo add the movement variable
+	public void update(float deltaTime, float velocityX, float velocityY){
+		updateShip(deltaTime, velocityX, velocityY);//todo add the movement variable
 	}
 	
-	public void updateShip(float deltaTime, float velocityX){
+	public void updateShip(float deltaTime, float velocityX, float velocityY){
 		ship.velocity.x = velocityX;
+		ship.velocity.y = velocityY;
 		ship.update(deltaTime);
+	}
+	
+	public void makeGameOver(){
+		state = WORLD_STATE_GAME_OVER;
 	}
 }

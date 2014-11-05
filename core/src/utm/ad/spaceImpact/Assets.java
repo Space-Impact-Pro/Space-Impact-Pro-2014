@@ -44,6 +44,9 @@ public class Assets {
 	public static Texture ship_image;
 	public static TextureRegion ship_imageRegion;
 	
+	public static Texture dummyGameEnd;
+	public static TextureRegion dummyGameEndRegion;
+	
 	
 	public static BitmapFont font;
 	
@@ -81,6 +84,9 @@ public class Assets {
 		///// ship implementation in game screen////  --->> moved to method below
 //		ship_image = loadTexture("data/ship_box.png");
 //		ship_imageRegion = new TextureRegion(ship_image,  0, 0, 32, 32);
+		
+		dummyGameEnd = loadTexture("data/ship_box.png");
+		dummyGameEndRegion = new TextureRegion(dummyGameEnd, 0,0,32,32);
 		
 	}
 	

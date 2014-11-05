@@ -1,6 +1,7 @@
 package utm.ad.spaceImpact;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Application.ApplicationType;
@@ -10,10 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Application.ApplicationType;
 
-
-
-
-import utm.ad.spaceImpact.World.WorldListener;;
+import utm.ad.spaceImpact.World.WorldListener;
 
 
 public class GameScreen extends ScreenAdapter {
@@ -27,6 +25,7 @@ public class GameScreen extends ScreenAdapter {
 	SpaceImpactPro game;
 	
 	int state;
+	float score;
 	OrthographicCamera guiCam;
 	Vector3 touchPoint;
 	World world;
@@ -35,6 +34,14 @@ public class GameScreen extends ScreenAdapter {
 	Rectangle backBounds;
 	Rectangle moveLeftRegion;
 	Rectangle moveRightRegion;
+	Rectangle moveUpRegion;
+	Rectangle moveDownRegion;
+	
+	Rectangle dummyGameOver;
+	
+	private String name;
+	private boolean doneInput;
+
 
 	public GameScreen (SpaceImpactPro game) {
 		this.game = game;
@@ -51,8 +58,13 @@ public class GameScreen extends ScreenAdapter {
 		
 		moveLeftRegion = new Rectangle(0,0, 40,40);
 		moveRightRegion = new Rectangle(320-40,0, 40 ,40);
+		moveUpRegion = new Rectangle(40,80,160,300);
+		moveDownRegion = new Rectangle(40,0,160,80);
 		
-		backBounds = new Rectangle(160 - 150, 240 , 300, 32);
+		backBounds = new Rectangle(300, 460 , 20, 20);
+		dummyGameOver = new Rectangle (320/2,480/2,32,32);
+		
+		score = 0;
 
 	}
 
@@ -67,43 +79,138 @@ public class GameScreen extends ScreenAdapter {
 			}
 		}
 		
-		updateRunning(deltaTime);
+		switch (state){
+			case GAME_READY:
+				updateReady();
+				break;
+			case GAME_RUNNING:
+				updateRunning(deltaTime);
+				break;
+			case GAME_OVER:
+				updateGameOver();
+		}
+		
+	}
+	
+	private void updateReady () {
+		if (Gdx.input.justTouched()) {
+			state = GAME_RUNNING;
+		}
+		if (Gdx.input.isKeyPressed(Keys.B))
+			state = GAME_RUNNING;
 	}
 	
 	private void updateRunning (float deltaTime){
-		float velocity = 0;
-		ApplicationType appType = Gdx.app.getType();
+		float velocityX = 0;
+		float velocityY = 0;
 		
-		if (appType == ApplicationType.Android)
-		{
+		float posY = 0, h = 0;
+		ApplicationType appType = Gdx.app.getType();
+		posY = world.ship.getPositionY() * 34;
+//		if (appType == ApplicationType.Android)
+//		{
 			boolean activeTouch = false;
 			if (Gdx.input.isTouched()) {
 				guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
+				
+				
 				if (moveLeftRegion.contains(touchPoint.x, touchPoint.y)) {
 //					Assets.playSound(Assets.clickSound);
 //					state = GAME_PAUSED;
 //					return;
-					velocity = -5f;
+					velocityX = -5f;
 				}
 				if (moveRightRegion.contains(touchPoint.x, touchPoint.y)) {
 //					Assets.playSound(Assets.clickSound);
 //					state = GAME_PAUSED;
 //					return;
-					velocity = 5f;
+					velocityX = 5f;
 				}
+				if (moveUpRegion.contains(touchPoint.x, touchPoint.y)) {
+//					Assets.playSound(Assets.clickSound);
+//					state = GAME_PAUSED;
+//					return;
+					velocityY = 5f;
+					moveUpRegion.set(40,posY,240,480-posY);
+				}
+				if (moveDownRegion.contains(touchPoint.x, touchPoint.y)) {
+//					Assets.playSound(Assets.clickSound);
+//					state = GAME_PAUSED;
+//					return;
+					velocityY = -5f;
+					moveDownRegion.set(40,0,240,posY);
+				}
+				
 				activeTouch = true;
 			}
 			else{
 				activeTouch = false;
 			}
-		}
-		else{
-		if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) velocity = -5f;
-		if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) velocity = 5f;
-		}
-		world.update(deltaTime, velocity);
+//		}
+//		else{
+		if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) {velocityX = -5f; }
+		if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) {velocityX = 5f; }
+		if (Gdx.input.isKeyPressed(Keys.DPAD_UP)) {velocityY = 5f;}
+		if (Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) {velocityY = -5f;}
+		score = score + 1;
+		System.out.println(score); 	//debugging
+//		}
 		
+		world.update(deltaTime, velocityX, velocityY);
+		
+		if (Gdx.input.justTouched()) {
+			if (dummyGameOver.contains(touchPoint.x, touchPoint.y)) {
+				world.state = World.WORLD_STATE_GAME_OVER;
+				state = GAME_OVER;
+				return;
+			}
+		}
+		
+		if (world.state == World.WORLD_STATE_GAME_OVER){
+			
+		}
+		
+		
+	}
+	
+	private void updateGameOver () {
+				
+		if (Gdx.input.justTouched()) {
+			
+			String title = "Name";
+			String initialText = "Name here";
+			
+			Gdx.input.getTextInput(new TextInputListener() {
+				
+				String message;
+				
+	            
+	            @Override
+	            public void input(String text) {
+	            name = text;
+	            doneInput =true;
+	            }
+	           
+	            @Override
+	            public void canceled() {
+	            doneInput =true;
+	            }
+	     }, title, initialText);
+			
+		}
+		if (doneInput){
+			SpaceImpactPro.highscore.addScore(name, (int)score);
+			game.setScreen(new MainMenuScreen(game));
+			doneInput = false;
+		}
+	}
+	
+	private void presentGameRunning(){
+		game.batcher.draw(Assets.dummyGameEnd, 320/2,480/2, 32, 32);
+	}
+	
+	private void presentGameOver(){
+		Assets.font.draw(game.batcher,"GAME OVER" , 30, 350);
 	}
 
 	public void draw () {
@@ -118,6 +225,14 @@ public class GameScreen extends ScreenAdapter {
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		
+		switch (state){
+		case GAME_RUNNING:
+			presentGameRunning();
+			break;
+		case GAME_OVER:
+			presentGameOver();
+			break;
+		}
 		
 		game.batcher.end();
 		
