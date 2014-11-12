@@ -20,8 +20,8 @@ public class SpaceImpactPro extends Game {
 //			Settings.load();
 			Assets.load();  //lepas ni add
 			highscore = new HighscoreManager();
-			highscore.addScore("test1",231);
-			highscore.addScore("test2",231);
+			highscore.addScore("test1",10);
+			highscore.addScore("test2",20);
 			System.out.print(highscore.getHighscoreString());
 			setScreen(new FirstMenuScreen(this));
 		}

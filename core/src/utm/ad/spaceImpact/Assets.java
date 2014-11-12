@@ -44,8 +44,8 @@ public class Assets {
 	public static Texture ship_image;
 	public static TextureRegion ship_imageRegion;
 	
-	public static Texture dummyGameEnd;
-	public static TextureRegion dummyGameEndRegion;
+	public static Texture monster;
+	public static TextureRegion monsterRegion;
 	
 	
 	public static BitmapFont font;
@@ -62,7 +62,7 @@ public class Assets {
 		backgroundMenu = loadTexture("data/MainMenu.png");
 		backgroundRegionMenu = new TextureRegion(backgroundMenu, 0, 0, 320, 480);
 		
-		backgroundShipSelect = loadTexture("data/SelectShip.png");
+		backgroundShipSelect = loadTexture("data/SelectShip-1.png");
 		backgroundRegionShipSelect = new TextureRegion(backgroundShipSelect, 0, 0, 320, 480);
 	
 		backgroundModeSelect = loadTexture("data/ModeSelect.png");
@@ -77,6 +77,8 @@ public class Assets {
 		menuBackground = loadTexture("data/background2.png");
 		menuBackgroundRegion = new TextureRegion(menuBackground, 0, 0, 320, 480);
 		
+		monster = loadTexture("data/enemy/monster.png");
+		monsterRegion = new TextureRegion(monster,0,0,128,156);
 		loadShip(0);
 		
 		font = new BitmapFont(Gdx.files.internal("font/calibri.fnt"), Gdx.files.internal("font/calibri.png"), false);
@@ -85,9 +87,6 @@ public class Assets {
 //		ship_image = loadTexture("data/ship_box.png");
 //		ship_imageRegion = new TextureRegion(ship_image,  0, 0, 32, 32);
 		
-		dummyGameEnd = loadTexture("data/ship_box.png");
-		dummyGameEndRegion = new TextureRegion(dummyGameEnd, 0,0,32,32);
-		
 	}
 	
 	public static void loadShipSelect (int index) { //change the space ship selection screen background based on passed integer index
@@ -95,8 +94,11 @@ public class Assets {
 			backgroundShipSelect = loadTexture("data/SelectShip-1.png");
 		else if (index == 1)
 			backgroundShipSelect = loadTexture("data/SelectShip-2.png");
-		else
+		else if (index == 2)
 			backgroundShipSelect = loadTexture("data/SelectShip-3.png");
+		else if (index == 3)
+			backgroundShipSelect = loadTexture("data/SelectShip-4.png");   //13 NOV
+			
 			
 			backgroundRegionShipSelect = new TextureRegion(backgroundShipSelect, 0, 0, 320, 480);
 		
@@ -109,8 +111,13 @@ public class Assets {
 			ship_image = loadTexture("data/ship/ship2.png");
 		else if (index ==2)
 			ship_image = loadTexture("data/ship/ship3.png");
-		
+		else if (index ==3)
+			ship_image = loadTexture("data/ship/ship4.png");
+		if (index != 3)
 		ship_imageRegion = new TextureRegion(ship_image, 0, 0, 32, 32);
+		else
+			ship_imageRegion = new TextureRegion(ship_image, 0, 0, 128, 128);
+			
 	}
 	
 	

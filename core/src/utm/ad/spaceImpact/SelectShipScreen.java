@@ -15,6 +15,7 @@ public class SelectShipScreen extends ScreenAdapter {
 	Rectangle ship1Bounds;
 	Rectangle ship2Bounds;
 	Rectangle ship3Bounds;
+	Rectangle ship4Bounds;
 	Vector3 touchPoint;
 	String[] highScores;
 	float xOffset = 0;
@@ -28,7 +29,8 @@ public class SelectShipScreen extends ScreenAdapter {
 		
 		ship1Bounds = new Rectangle(60, 200, 50, 50);
 		ship2Bounds = new Rectangle(60 + 120, 200, 50, 50);
-		ship3Bounds = new Rectangle(60 + 60, 120, 50, 50);
+		ship3Bounds = new Rectangle(60, 120, 50, 50);
+		ship4Bounds = new Rectangle(60 + 120, 120, 50, 50);
 		
 		touchPoint = new Vector3();
 
@@ -57,6 +59,14 @@ public class SelectShipScreen extends ScreenAdapter {
 				Assets.loadShip(2);
 				return;
 			}
+			
+			//13 NOV 2014
+			if (ship4Bounds.contains(touchPoint.x, touchPoint.y)){
+				Assets.loadShipSelect(3);
+				game.setScreen(new SelectShip1Screen(game));
+				Assets.loadShip(3);
+				return;
+			}
 			if (backBounds.contains(touchPoint.x, touchPoint.y)) {
 				//Assets.playSound(Assets.clickSound);
 				game.setScreen(new MainMenuScreen(game));
@@ -76,18 +86,6 @@ public class SelectShipScreen extends ScreenAdapter {
 		game.batcher.draw(Assets.backgroundRegionShipSelect, 0, 0, 320, 480);
 		game.batcher.end();
 
-//		game.batcher.enableBlending();
-//		game.batcher.begin();
-//		game.batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
-
-//		float y = 230;
-//		for (int i = 4; i >= 0; i--) {
-//			Assets.font.draw(game.batcher, highScores[i], xOffset, y);
-//			y += Assets.font.getLineHeight();
-//		}
-
-//		game.batcher.draw(Assets.arrow, 0, 0, 64, 64);
-//		game.batcher.end();
 	}
 
 	@Override

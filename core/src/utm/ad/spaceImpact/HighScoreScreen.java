@@ -65,9 +65,9 @@ public class HighScoreScreen extends ScreenAdapter {
 		game.batcher.enableBlending();
 		game.batcher.begin();
 //		game.batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
-		float y = 230;
+		float y = 100;
 		
-		for (int i = 1; i >= 0; i--) {
+		for (int i = 5; i >= 0; i--) {		///will change later to display more highscore
 			String a = "           "+highScores.get(i).getNaam()+"   "+highScores.get(i).getScore();
 			Assets.font.draw(game.batcher,a , xOffset, y);
 			y += Assets.font.getLineHeight();

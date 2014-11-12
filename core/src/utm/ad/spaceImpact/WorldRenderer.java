@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
+
 //used to put items onto the world in the game
 public class WorldRenderer {
 	static final float FRUSTUM_WIDTH = 10;
@@ -25,6 +26,7 @@ public class WorldRenderer {
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();
 		renderObjects();
+
 		
 	}
 	
@@ -40,6 +42,7 @@ public class WorldRenderer {
 		batch.enableBlending();
 		batch.begin();
 		renderShip();
+		renderEnemy();
 		batch.end();
 	}
 	
@@ -52,5 +55,18 @@ public class WorldRenderer {
 		else
 			batch.draw(keyFrame, world.ship.position.x - 0.5f, world.ship.position.y - 0.5f, side * 1, 1);
 		//batch.draw(keyFrame, side, side, side, side);
+	}
+	
+	private void renderEnemy () {
+		int len = world.enemies.size();
+		for (int i = 0; i < len; i++) {
+			Enemy squirrel = world.enemies.get(i);
+			TextureRegion keyFrame = Assets.monsterRegion;
+			float side = squirrel.velocity.x < 0 ? -1 : 1;
+			if (side < 0)
+				batch.draw(keyFrame, squirrel.position.x + 0.5f, squirrel.position.y - 0.5f, side * 1, 1);
+			else
+				batch.draw(keyFrame, squirrel.position.x - 0.5f, squirrel.position.y - 0.5f, side * 1, 1);
+		}
 	}
 }

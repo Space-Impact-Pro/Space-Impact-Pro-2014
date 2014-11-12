@@ -15,6 +15,7 @@ public class SelectShip1Screen extends ScreenAdapter {
 	Rectangle ship1Bounds;
 	Rectangle ship2Bounds;
 	Rectangle ship3Bounds;
+	Rectangle ship4Bounds;
 	Vector3 touchPoint;
 	String[] highScores;
 	float xOffset = 0;
@@ -28,7 +29,8 @@ public class SelectShip1Screen extends ScreenAdapter {
 		
 		ship1Bounds = new Rectangle(60, 200, 50, 50);
 		ship2Bounds = new Rectangle(60 + 140, 200, 50, 50);
-		ship3Bounds = new Rectangle(60 + 70, 120, 50, 50);
+		ship3Bounds = new Rectangle(60, 120, 50, 50);
+		ship4Bounds = new Rectangle(60 + 120, 120, 50, 50);
 		
 		touchPoint = new Vector3();
 
@@ -55,6 +57,12 @@ public class SelectShip1Screen extends ScreenAdapter {
 				Assets.loadShipSelect(2);
 				game.setScreen(new SelectShipScreen(game));
 				Assets.loadShip(2);
+				return;
+			}
+			if (ship4Bounds.contains(touchPoint.x, touchPoint.y)){
+				Assets.loadShipSelect(3);
+				game.setScreen(new SelectShipScreen(game));
+				Assets.loadShip(3);
 				return;
 			}
 			if (backBounds.contains(touchPoint.x, touchPoint.y)) {

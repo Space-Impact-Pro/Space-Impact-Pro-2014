@@ -1,3 +1,7 @@
+task wrapper(type:wrapper){
+	gradleVersion='1.10'
+}
+
 buildscript {
     repositories {
         mavenCentral()

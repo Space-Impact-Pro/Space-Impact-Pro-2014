@@ -34,12 +34,12 @@ public class GameScreen extends ScreenAdapter {
 	WorldListener worldListener;
 	WorldRenderer renderer;
 	Rectangle backBounds;
+	
 	Rectangle moveLeftRegion;
 	Rectangle moveRightRegion;
+	
 	Rectangle moveUpRegion;
 	Rectangle moveDownRegion;
-	
-	Rectangle dummyGameOver;
 	
 	private String name;
 	private boolean doneInput;
@@ -62,11 +62,11 @@ public class GameScreen extends ScreenAdapter {
 		
 		moveLeftRegion = new Rectangle(0,0, 40,40);
 		moveRightRegion = new Rectangle(320-40,0, 40 ,40);
+		
 		moveUpRegion = new Rectangle(40,80,160,300);
 		moveDownRegion = new Rectangle(40,0,160,80);
 		
 		backBounds = new Rectangle(300, 460 , 20, 20);
-		dummyGameOver = new Rectangle (320/2,480/2,32,32);
 		
 		score = 0;
 
@@ -82,7 +82,7 @@ public class GameScreen extends ScreenAdapter {
 				return;
 			}
 		}
-		
+		//////6.11/////
 		switch (state){
 			case GAME_READY:
 				updateReady();
@@ -106,11 +106,11 @@ public class GameScreen extends ScreenAdapter {
 	
 	private void updateRunning (float deltaTime){
 		float velocityX = 0;
-		float velocityY = 0;
+		float velocityY = 0;  ////////6.11/////
 		
 		float posY = 0, h = 0;
 		ApplicationType appType = Gdx.app.getType();
-		posY = world.ship.getPositionY() * 34;
+		posY = world.ship.getPositionY() * 34;//GET THE ship position in pixels
 //		if (appType == ApplicationType.Android)
 //		{
 			boolean activeTouch = false;
@@ -130,14 +130,14 @@ public class GameScreen extends ScreenAdapter {
 //					return;
 					velocityX = 5f;
 				}
-				if (moveUpRegion.contains(touchPoint.x, touchPoint.y)) {
+				if (moveUpRegion.contains(touchPoint.x, touchPoint.y)) {//////6.11/////
 //					Assets.playSound(Assets.clickSound);
 //					state = GAME_PAUSED;
 //					return;
 					velocityY = 5f;
-					moveUpRegion.set(40,posY,240,480-posY);
+					moveUpRegion.set(40,posY,240,470-posY);
 				}
-				if (moveDownRegion.contains(touchPoint.x, touchPoint.y)) {
+				if (moveDownRegion.contains(touchPoint.x, touchPoint.y)) {//////6.11/////
 //					Assets.playSound(Assets.clickSound);
 //					state = GAME_PAUSED;
 //					return;
@@ -161,72 +161,99 @@ public class GameScreen extends ScreenAdapter {
 //		}
 		
 		world.update(deltaTime, velocityX, velocityY);
-		
-		if (Gdx.input.justTouched()) {
-			if (dummyGameOver.contains(touchPoint.x, touchPoint.y)) {
-				world.state = World.WORLD_STATE_GAME_OVER;
-				state = GAME_OVER;
-				return;
-			}
-		}
+		///later on will be changed to collision for changing the state to GO
 		
 		if (world.state == World.WORLD_STATE_GAME_OVER){
-			
+			state = GAME_OVER;
 		}
 		
 		
 	}
 	
-	private void updateGameOver () {
+	private void updateGameOver () {//////6.11/////
+		if (Gdx.input.justTouched()) {
+					
+			String title = "Name";
+			String initialText = "Name here";
+			//////////////////////////////////////////////////////////////////////
+			Gdx.input.getTextInput(new TextInputListener() {  //get the name input
 				
+				String message;
+				
+	            
+	            @Override
+	            public void input(String text) {
+	            name = text;
+	            doneInput =true;
+	            }
+	           
+	            @Override
+	            public void canceled() {
+	            doneInput =true;
+	            }
+			}, title, initialText);
+				
+			}
+			if (doneInput){
+				SpaceImpactPro.highscore.addScore(name, (int)score);  //add name to highscore
+				doneInput = false;
+				Timer.schedule(new Task(){		//delay the screen switch for 1 second
+				    @Override
+				    public void run() {
+						game.setScreen(new MainMenuScreen(game));
+						
+				    }
+				},1);
+				
+			}
 		//if (Gdx.input.justTouched()) {
 		
-			if(!done){
-				done = true;
-				String title = "Name";
-				String initialText = "Name here";
-				
-				Gdx.input.getTextInput(new TextInputListener() {
-					
-					String message;
-					
-		            
-		            @Override
-		            public void input(String text) {
-		            name = text;
-		            doneInput =true;
-		            }
-		           
-		            @Override
-		            public void canceled() {
-		            doneInput =true;
-		            }
-		     }, title, initialText);
+//			if(!done){
+//				done = true;
+//				String title = "Name";
+//				String initialText = "Name here";
+//				
+//				Gdx.input.getTextInput(new TextInputListener() {	//get the name
+//					
+//					String message;
+//					
+//		            
+//		            @Override
+//		            public void input(String text) {
+//		            name = text;
+//		            doneInput =true;
+//		            }
+//		           
+//		            @Override
+//		            public void canceled() {
+//		            doneInput =true;
+//		            }
+//		     }, title, initialText);
+//			
+//		}
+//		//}
+//		if (doneInput){			//add name to highscore
+//			
+//			SpaceImpactPro.highscore.addScore(name, (int)score);
+//			if (Gdx.input.justTouched()){
+//			game.setScreen(new MainMenuScreen(game));
+//	    	
+//			//Timer.schedule(new Task(){
+//			    //@Override
+//			    //public void run() {
+//			    	
+//			    }
+//			doneInput = false;
+//			//}, 2);
+//			
 			
-		}
-		//}
-		if (doneInput){
-			
-			SpaceImpactPro.highscore.addScore(name, (int)score);
-			if (Gdx.input.justTouched()){
-			game.setScreen(new MainMenuScreen(game));
-	    	doneInput = false;
-			//Timer.schedule(new Task(){
-			    //@Override
-			    //public void run() {
-			    	
-			    }
-			//}, 2);
-			
-			
-		}
+//		}
 	}
 	
 	private void presentGameRunning(){
-		game.batcher.draw(Assets.dummyGameEnd, 320/2,480/2, 32, 32);
 	}
 	
-	private void presentGameOver(){
+	private void presentGameOver(){//////6.11///// present the game over item
 		Assets.font.draw(game.batcher,"GAME OVER" , 60, 350);
 		if (doneInput)
 			Assets.font.draw(game.batcher,name +"    "+score , 60, 310);

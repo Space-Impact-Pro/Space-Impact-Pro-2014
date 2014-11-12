@@ -8,6 +8,8 @@ public class Ship extends DynamicGameObject {
 	public static final float SHIP_WIDTH=0.8f;
 	public static final float SHIP_HEIGHT=0.8f;
 	
+	public static final int SHIP_STATE_HIT = 2;
+	
 	public static int selectedShip;
 	
 	int state;
@@ -35,6 +37,11 @@ public class Ship extends DynamicGameObject {
 	
 	public void fire(){
 		
+	}
+	
+	public void hitEnemy(){
+		velocity.set(0,0);
+		state = SHIP_STATE_HIT;
 	}
 	
 	public float getPositionX(){
