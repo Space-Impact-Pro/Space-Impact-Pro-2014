@@ -41,7 +41,7 @@ public class World {
 		this.listener=listener;
 		this.enemies = new ArrayList<Enemy>();
 		
-		this.enemies.add(new Enemy(7,7));
+		this.enemies.add(new Enemy(5,5));
 		this.enemies.add(new Enemy(8,9));
 		
 		
