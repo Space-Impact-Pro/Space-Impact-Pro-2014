@@ -111,6 +111,7 @@ public class GameScreen extends ScreenAdapter {
 		float posY = 0, h = 0;
 		ApplicationType appType = Gdx.app.getType();
 		posY = world.ship.getPositionY() * 34;//GET THE ship position in pixels
+		world.ship.state = 0;
 //		if (appType == ApplicationType.Android)
 //		{
 			boolean activeTouch = false;
@@ -156,6 +157,7 @@ public class GameScreen extends ScreenAdapter {
 		if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) {velocityX = 5f; }
 		if (Gdx.input.isKeyPressed(Keys.DPAD_UP)) {velocityY = 5f;}
 		if (Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) {velocityY = -5f;}
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {world.ship.state = Ship.SHIP_STATE_FIRING;}
 		score = score + 1;
 		System.out.println(score); 	//debugging
 //		}

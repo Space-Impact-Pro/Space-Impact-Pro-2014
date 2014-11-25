@@ -26,8 +26,6 @@ public class WorldRenderer {
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();
 		renderObjects();
-
-		
 	}
 	
 	public void renderBackground () {
@@ -43,6 +41,7 @@ public class WorldRenderer {
 		batch.begin();
 		renderShip();
 		renderEnemy();
+		renderBullet();
 		batch.end();
 	}
 	
@@ -60,13 +59,22 @@ public class WorldRenderer {
 	private void renderEnemy () {
 		int len = world.enemies.size();
 		for (int i = 0; i < len; i++) {
-			Enemy squirrel = world.enemies.get(i);
+			Enemy enemy = world.enemies.get(i);
 			TextureRegion keyFrame = Assets.monsterRegion;
-			float side = squirrel.velocity.x < 0 ? -1 : 1;
+			float side = enemy.velocity.x < 0 ? -1 : 1;
 			if (side < 0)
-				batch.draw(keyFrame, squirrel.position.x + 0.5f, squirrel.position.y - 0.5f, side * 1, 1);
+				batch.draw(keyFrame, enemy.position.x + 0.5f, enemy.position.y - 0.5f, side * 1, 1);
 			else
-				batch.draw(keyFrame, squirrel.position.x - 0.5f, squirrel.position.y - 0.5f, side * 1, 1);
+				batch.draw(keyFrame, enemy.position.x - 0.5f, enemy.position.y - 0.5f, side * 1, 1);
+		}
+	}
+	
+	private void renderBullet(){
+		int len= world.bullets.size();
+		for (int i = 0; i < len; i++) {
+		Bullet bullet = world.bullets.get(i);
+		TextureRegion keyFrame = Assets.bulletRegion;
+			batch.draw(keyFrame, bullet.position.x + 0.5f, bullet.position.y - 0.5f, Bullet.BULLET_WIDTH, Bullet.BULLET_HEIGHT);
 		}
 	}
 }

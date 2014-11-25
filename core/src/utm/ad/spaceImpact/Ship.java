@@ -9,6 +9,7 @@ public class Ship extends DynamicGameObject {
 	public static final float SHIP_HEIGHT=0.8f;
 	
 	public static final int SHIP_STATE_HIT = 2;
+	public static final int SHIP_STATE_FIRING = 3;
 	
 	public static int selectedShip;
 	
@@ -35,8 +36,9 @@ public class Ship extends DynamicGameObject {
 		if (position.y > World.WORLD_HEIGHT/20-0.5) position.y =  World.WORLD_HEIGHT/20- 0.5f;
 	}
 	
-	public void fire(){
-		
+	public Bullet fire(){
+		Bullet b = new Bullet(position.x, position.y + 0.2f);
+		return b;
 	}
 	
 	public void hitEnemy(){

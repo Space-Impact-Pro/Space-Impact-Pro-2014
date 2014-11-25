@@ -47,6 +47,8 @@ public class Assets {
 	public static Texture monster;
 	public static TextureRegion monsterRegion;
 	
+	public static Texture bullet;
+	public static TextureRegion bulletRegion;
 	
 	public static BitmapFont font;
 	
@@ -79,6 +81,10 @@ public class Assets {
 		
 		monster = loadTexture("data/enemy/monster.png");
 		monsterRegion = new TextureRegion(monster,0,0,128,156);
+		
+		bullet = loadTexture("data/bullet.png");
+		bulletRegion = new TextureRegion(bullet,0,0,16,16);
+		
 		loadShip(0);
 		
 		font = new BitmapFont(Gdx.files.internal("font/calibri.fnt"), Gdx.files.internal("font/calibri.png"), false);

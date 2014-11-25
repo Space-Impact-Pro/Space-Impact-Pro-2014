@@ -25,9 +25,7 @@ public class World {
 	public static final int WORLD_STATE_GAME_OVER = 2;
 	
 	public final List<Enemy> enemies;
-	
-//	public Enemy enemy;
-//	public Enemy enemy2;
+	public List<Bullet> bullets;
 	
 	public final Ship ship;
 	public final WorldListener listener;
@@ -44,15 +42,19 @@ public class World {
 		this.enemies.add(new Enemy(5,5));
 		this.enemies.add(new Enemy(8,9));
 		
+		this.bullets = new ArrayList<Bullet>();
+		
 		
 		this.score =0;
 		this.state = WORLD_STATE_RUNNING;
 	}
 	
 	public void update(float deltaTime, float velocityX, float velocityY){
-		updateShip(deltaTime, velocityX, velocityY);//todo add the movement variable
+		updateShip(deltaTime, velocityX, velocityY);
 		updateEnemy(deltaTime);
+		updateBullet(deltaTime);
 		if (ship.state != Ship.SHIP_STATE_HIT) checkCollision();
+		if (ship.state == Ship.SHIP_STATE_FIRING) bullets.add(ship.fire());
 	}
 	
 	public void updateShip(float deltaTime, float velocityX, float velocityY){
@@ -66,6 +68,18 @@ public class World {
 		for (int i = 0; i < len; i++) {
 			Enemy enemy = enemies.get(i);
 			enemy.update(deltaTime);
+		}
+	}
+	
+	private void updateBullet (float deltaTime){
+		int len = bullets.size();
+		for (int i = 0; i < len; i++) {
+			Bullet bullet = bullets.get(i);
+			bullet.update(deltaTime);
+			if (bullet.isDecayed()){
+				bullets.remove(i);
+				len--;
+			}
 		}
 	}
 	
@@ -84,6 +98,7 @@ public class World {
 			}
 		}
 	}
+	
 	
 //	public void makeGameOver(){
 //		state = WORLD_STATE_GAME_OVER;
