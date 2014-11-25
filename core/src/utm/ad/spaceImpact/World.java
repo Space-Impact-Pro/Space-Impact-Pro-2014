@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public class World {
 	public interface WorldListener {
@@ -33,6 +35,7 @@ public class World {
 	public float distanceSoFar;
 	public int score;
 	public int state;
+	private int bulletDelay=0;
 	
 	public World (WorldListener listener){
 		this.ship = new Ship(5,1);
@@ -50,11 +53,20 @@ public class World {
 	}
 	
 	public void update(float deltaTime, float velocityX, float velocityY){
+		
 		updateShip(deltaTime, velocityX, velocityY);
 		updateEnemy(deltaTime);
 		updateBullet(deltaTime);
+		
 		if (ship.state != Ship.SHIP_STATE_HIT) checkCollision();
-		if (ship.state == Ship.SHIP_STATE_FIRING) bullets.add(ship.fire());
+		if (ship.state == Ship.SHIP_STATE_FIRING) {
+			bulletDelay++;
+			if (bulletDelay ==8){ 
+				bullets.add(ship.fire());
+				bulletDelay =0;
+			}
+			checkCollision();
+		}
 	}
 	
 	public void updateShip(float deltaTime, float velocityX, float velocityY){
@@ -75,17 +87,18 @@ public class World {
 		int len = bullets.size();
 		for (int i = 0; i < len; i++) {
 			Bullet bullet = bullets.get(i);
-			bullet.update(deltaTime);
 			if (bullet.isDecayed()){
-				bullets.remove(i);
+				bullets.remove(bullet);
 				len--;
 			}
+			bullet.update(deltaTime);
 		}
 	}
 	
 	
 	private void checkCollision(){
 		checkEnemyCollision();
+		checkBulletCollision();
 	}
 	
 	private void checkEnemyCollision(){
@@ -95,6 +108,24 @@ public class World {
 			if (enemy.bounds.overlaps(ship.bounds)) {
 				ship.hitEnemy();
 				state = WORLD_STATE_GAME_OVER;
+			}
+		}
+	}
+	
+	private void checkBulletCollision(){	///////Not finished yet
+		int enemyLength = enemies.size();
+		int bulletLength = bullets.size();
+		for (int i = 0; i < enemyLength; i++) {
+			Enemy enemy = enemies.get(i);
+			for (int j = 0; j < bulletLength; j++) {
+				Bullet bullet= bullets.get(j);
+				if (enemy.bounds.overlaps(bullet.bounds)) {
+					bullet.hitEnemy();
+					bullets.remove(bullet);
+					enemies.remove(enemy);
+					enemyLength--;
+					bulletLength--;
+				}
 			}
 		}
 	}
