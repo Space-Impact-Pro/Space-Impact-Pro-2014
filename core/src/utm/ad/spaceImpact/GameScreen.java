@@ -198,7 +198,7 @@ public class GameScreen extends ScreenAdapter {
 			}
 			if (doneInput){
 				SpaceImpactPro.highscore.addScore(name, (int)score);  //add name to highscore
-				doneInput = false;
+				doneInput = false;       
 				Timer.schedule(new Task(){		//delay the screen switch for 1 second
 				    @Override
 				    public void run() {

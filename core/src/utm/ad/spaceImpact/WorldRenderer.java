@@ -41,6 +41,7 @@ public class WorldRenderer {
 		batch.begin();
 		renderShip();
 		renderEnemy();
+		renderBoss();
 		renderBullet();
 		batch.end();
 	}
@@ -76,5 +77,15 @@ public class WorldRenderer {
 		TextureRegion keyFrame = Assets.bulletRegion;
 			batch.draw(keyFrame, bullet.position.x + 0.5f, bullet.position.y - 0.5f, Bullet.BULLET_WIDTH, Bullet.BULLET_HEIGHT);
 		}
+	}
+	
+	private void renderBoss(){
+		int len = world.boss.size();
+		TextureRegion keyFrame = Assets.monsterRegion;
+		if (len != 0){
+			Boss boss = world.boss.get(0);
+			batch.draw(keyFrame, boss.position.x+0.5f, boss.position.y+0.5f, 3, 3);
+		}
+
 	}
 }

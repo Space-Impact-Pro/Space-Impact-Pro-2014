@@ -27,9 +27,10 @@ public class Bullet extends DynamicGameObject {
 		}
 	}
 	
-	public void hitEnemy(){
+	public void hitEnemy(Enemy enemy){
 		velocity.set(0,0);
 		decayed = true;
+		enemy.decreaseHp();
 	}
 	
 	public boolean isDecayed(){

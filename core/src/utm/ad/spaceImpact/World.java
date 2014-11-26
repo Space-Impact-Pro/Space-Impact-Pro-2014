@@ -27,6 +27,7 @@ public class World {
 	public static final int WORLD_STATE_GAME_OVER = 2;
 	
 	public final List<Enemy> enemies;
+	public final List<Boss> boss;
 	public List<Bullet> bullets;
 	
 	public final Ship ship;
@@ -41,9 +42,12 @@ public class World {
 		this.ship = new Ship(5,1);
 		this.listener=listener;
 		this.enemies = new ArrayList<Enemy>();
+		this.boss = new ArrayList<Boss>();
 		
 		this.enemies.add(new Enemy(5,5));
 		this.enemies.add(new Enemy(8,9));
+		
+		this.boss.add(new Boss(5,11));
 		
 		this.bullets = new ArrayList<Bullet>();
 		
@@ -120,15 +124,33 @@ public class World {
 			for (int j = 0; j < bulletLength; j++) {
 				Bullet bullet= bullets.get(j);
 				if (enemy.bounds.overlaps(bullet.bounds)) {
-					bullet.hitEnemy();
+					bullet.hitEnemy(enemy);
 					bullets.remove(bullet);
-					enemies.remove(enemy);
+					if (enemy.getHp() == 0)
+						enemies.remove(enemy);
+					enemyLength--;
+					bulletLength--;
+				}
+			}
+		}
+		
+		if (this.boss.size() != 0){
+			Boss boss = this.boss.get(0);
+			for (int j = 0; j <bulletLength ; j++){
+				Bullet bullet = bullets.get(j);
+				if (boss.bounds.overlaps(bullet.bounds)) {
+					bullet.hitEnemy(boss);
+					bullets.remove(bullet);
+					if (boss.getHp() == 0)
+						this.boss.remove(boss);
 					enemyLength--;
 					bulletLength--;
 				}
 			}
 		}
 	}
+	
+	
 	
 	
 //	public void makeGameOver(){
