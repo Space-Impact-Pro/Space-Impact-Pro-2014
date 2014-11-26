@@ -76,7 +76,7 @@ public class Assets {
 		background = loadTexture("data/GameBG1.jpg");
 		backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
 		
-		menuBackground = loadTexture("data/background2.png");
+		menuBackground = loadTexture("data/Highscore.png");
 		menuBackgroundRegion = new TextureRegion(menuBackground, 0, 0, 320, 480);
 		
 		monster = loadTexture("data/enemy/monster.png");
@@ -119,8 +119,8 @@ public class Assets {
 			ship_image = loadTexture("data/ship/ship3.png");
 		else if (index ==3)
 			ship_image = loadTexture("data/ship/ship4.png");
-		if (index != 3)
-		ship_imageRegion = new TextureRegion(ship_image, 0, 0, 32, 32);
+		if (index <= 1)
+			ship_imageRegion = new TextureRegion(ship_image, 0, 0, 32, 32);
 		else
 			ship_imageRegion = new TextureRegion(ship_image, 0, 0, 128, 128);
 			
