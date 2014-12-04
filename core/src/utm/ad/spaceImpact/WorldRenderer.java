@@ -22,6 +22,12 @@ public class WorldRenderer {
 	}
 	
 	public void render(){
+		if (world.state == World.WORLD_STATE_RUNNING)	//scroll the camera up
+			cam.position.y += 0.01f;
+		
+		//boundary for the ship(movable parts)
+		if (world.ship.position.y < cam.position.y - FRUSTUM_HEIGHT/2) world.ship.position.y = cam.position.y - FRUSTUM_HEIGHT/2;
+		if (world.ship.position.y > cam.position.y + FRUSTUM_HEIGHT/2) world.ship.position.y = cam.position.y + FRUSTUM_HEIGHT/2;
 		cam.update();
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();

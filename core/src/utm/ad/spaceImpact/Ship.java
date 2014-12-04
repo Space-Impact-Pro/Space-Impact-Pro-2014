@@ -29,11 +29,11 @@ public class Ship extends DynamicGameObject {
 		bounds.x = position.x - bounds.width / 2;
 		bounds.y = position.y - bounds.height / 2;
 		
+		position.y += 0.01f;
+		
 		stateTime += deltaTime;
 		if (position.x <0.5) position.x =0.5f;
 		if (position.x > World.WORLD_WIDTH-0.5) position.x =  World.WORLD_WIDTH- 0.5f;
-		if (position.y < 0.5) position.y = 0.5f;
-		if (position.y > World.WORLD_HEIGHT/20-0.5) position.y =  World.WORLD_HEIGHT/20- 0.5f;
 	}
 	
 	public Bullet fire(){

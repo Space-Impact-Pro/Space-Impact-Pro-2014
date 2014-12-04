@@ -23,11 +23,13 @@ public class GameScreen extends ScreenAdapter {
 	static final int GAME_PAUSED = 2;
 	static final int GAME_LEVEL_END = 3;
 	static final int GAME_OVER = 4;
+	static final int GAME_FINISHED = 5;
 	
 	SpaceImpactPro game;
 	
 	int state;
 	float score;
+	float offset = 0;
 	OrthographicCamera guiCam;
 	Vector3 touchPoint;
 	World world;
@@ -92,6 +94,9 @@ public class GameScreen extends ScreenAdapter {
 				break;
 			case GAME_OVER:
 				updateGameOver();
+				break;
+			case GAME_FINISHED:
+				updateFinished();
 		}
 		
 	}
@@ -99,14 +104,18 @@ public class GameScreen extends ScreenAdapter {
 	private void updateReady () {
 		if (Gdx.input.justTouched()) {
 			state = GAME_RUNNING;
+			world.state = World.WORLD_STATE_RUNNING;
 		}
-		if (Gdx.input.isKeyPressed(Keys.B))
+		if (Gdx.input.isKeyPressed(Keys.B)){
 			state = GAME_RUNNING;
+			world.state = World.WORLD_STATE_RUNNING;
+		}
 	}
 	
 	private void updateRunning (float deltaTime){
 		float velocityX = 0;
 		float velocityY = 0;  ////////6.11/////
+		
 		
 		float posY = 0, h = 0;
 		ApplicationType appType = Gdx.app.getType();
@@ -114,6 +123,9 @@ public class GameScreen extends ScreenAdapter {
 		world.ship.state = 0;
 //		if (appType == ApplicationType.Android)
 //		{
+		
+		
+		
 			boolean activeTouch = false;
 			if (Gdx.input.isTouched()) {
 				guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -167,6 +179,10 @@ public class GameScreen extends ScreenAdapter {
 		
 		if (world.state == World.WORLD_STATE_GAME_OVER){
 			state = GAME_OVER;
+		}
+		
+		if (world.enemies.size() == 0 && world.boss.size() == 0){
+			state = GAME_FINISHED;
 		}
 		
 		
@@ -252,11 +268,55 @@ public class GameScreen extends ScreenAdapter {
 //		}
 	}
 	
+	private void updateFinished(){
+		if (Gdx.input.justTouched()) {
+			
+			String title = "Name";
+			String initialText = "Name here";
+			//////////////////////////////////////////////////////////////////////
+			Gdx.input.getTextInput(new TextInputListener() {  //get the name input
+				
+				String message;
+				
+	            
+	            @Override
+	            public void input(String text) {
+	            name = text;
+	            doneInput =true;
+	            }
+	           
+	            @Override
+	            public void canceled() {
+	            doneInput =true;
+	            }
+			}, title, initialText);
+				
+			}
+			if (doneInput){
+				SpaceImpactPro.highscore.addScore(name, (int)score);  //add name to highscore
+				doneInput = false;       
+				Timer.schedule(new Task(){		//delay the screen switch for 1 second
+				    @Override
+				    public void run() {
+						game.setScreen(new MainMenuScreen(game));
+						
+				    }
+				},1);
+				
+			}
+	}
+	
 	private void presentGameRunning(){
 	}
 	
 	private void presentGameOver(){//////6.11///// present the game over item
 		Assets.font.draw(game.batcher,"GAME OVER" , 60, 350);
+		if (doneInput)
+			Assets.font.draw(game.batcher,name +"    "+score , 60, 310);
+	}
+	
+	private void presentGameFinished(){
+		Assets.font.draw(game.batcher,"Congratulations, you beat the game!" , 30, 350);
 		if (doneInput)
 			Assets.font.draw(game.batcher,name +"    "+score , 60, 310);
 	}
@@ -279,6 +339,9 @@ public class GameScreen extends ScreenAdapter {
 			break;
 		case GAME_OVER:
 			presentGameOver();
+			break;
+		case GAME_FINISHED:
+			presentGameFinished();
 			break;
 		}
 		

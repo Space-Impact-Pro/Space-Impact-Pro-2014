@@ -2,11 +2,11 @@ package utm.ad.spaceImpact;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+//import java.util.Random;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
+//import com.badlogic.gdx.math.Vector2;
+//import com.badlogic.gdx.utils.Timer;
+//import com.badlogic.gdx.utils.Timer.Task;
 
 public class World {
 	public interface WorldListener {
@@ -22,9 +22,15 @@ public class World {
 	
 	public static final float WORLD_WIDTH = 10;
 	public static final float WORLD_HEIGHT = 15 * 20;
+	
+	public static enum WorldState{
+		
+	}
+	public static final int WORLD_STATE_WAITING = -1;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_NEXT_LEVEL = 1;
 	public static final int WORLD_STATE_GAME_OVER = 2;
+	public static final int WORLD_STATE_FINISHED = 3;
 	
 	public final List<Enemy> enemies;
 	public final List<Boss> boss;
@@ -53,7 +59,7 @@ public class World {
 		
 		
 		this.score =0;
-		this.state = WORLD_STATE_RUNNING;
+		this.state = WORLD_STATE_WAITING;
 	}
 	
 	public void update(float deltaTime, float velocityX, float velocityY){
@@ -69,7 +75,7 @@ public class World {
 				bullets.add(ship.fire());
 				bulletDelay =0;
 			}
-			checkCollision();
+			
 		}
 	}
 	
@@ -113,10 +119,17 @@ public class World {
 				ship.hitEnemy();
 				state = WORLD_STATE_GAME_OVER;
 			}
+			if (boss.size() > 0){
+				if (boss.get(0).bounds.overlaps(ship.bounds))
+				{
+					ship.hitEnemy();
+					state = WORLD_STATE_GAME_OVER;
+				}
+			}
 		}
 	}
 	
-	private void checkBulletCollision(){	///////Not finished yet
+	private void checkBulletCollision(){	
 		int enemyLength = enemies.size();
 		int bulletLength = bullets.size();
 		for (int i = 0; i < enemyLength; i++) {
@@ -143,7 +156,6 @@ public class World {
 					bullets.remove(bullet);
 					if (boss.getHp() == 0)
 						this.boss.remove(boss);
-					enemyLength--;
 					bulletLength--;
 				}
 			}
