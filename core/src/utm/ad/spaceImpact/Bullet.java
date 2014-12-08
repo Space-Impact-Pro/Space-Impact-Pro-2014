@@ -21,7 +21,7 @@ public class Bullet extends DynamicGameObject {
 		bounds.y = position.y - BULLET_HEIGHT / 2;
 		time += deltaTime;
 		
-		if (time > 1){
+		if (time > 1.5){
 			decayed = true;
 			velocity.set(0,0);
 		}

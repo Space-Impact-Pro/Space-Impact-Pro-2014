@@ -3,13 +3,19 @@ package utm.ad.spaceImpact;
 public class Enemy extends DynamicGameObject {
 	public static final float ENEMY_WIDTH = 1;
 	public static final float ENEMY_HEIGHT = 0.6f;
-	public static final float ENEMY_VELOCITY = 3f;
+	public static final float ENEMY_VELOCITY = 2.5f;
 	
+	public static final int ENEMY_TYPE_STATIC = 0;
+	public static final int ENEMY_TYPE_MOVING = 1;
+	
+	int type;
 	int hp;
 	
-	public Enemy(float x, float y){
+	public Enemy(int type, float x, float y){
 		super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
-		velocity.set(ENEMY_VELOCITY, 0);
+		this.type = type;
+		if (type == ENEMY_TYPE_MOVING)
+			velocity.set(ENEMY_VELOCITY, 0);
 		hp = 3;
 	}
 	

@@ -181,7 +181,7 @@ public class GameScreen extends ScreenAdapter {
 			state = GAME_OVER;
 		}
 		
-		if (world.enemies.size() == 0 && world.boss.size() == 0){
+		if (world.boss.size() == 0){
 			state = GAME_FINISHED;
 		}
 		
@@ -221,7 +221,7 @@ public class GameScreen extends ScreenAdapter {
 						game.setScreen(new MainMenuScreen(game));
 						
 				    }
-				},1);
+				},0.4f);
 				
 			}
 		//if (Gdx.input.justTouched()) {

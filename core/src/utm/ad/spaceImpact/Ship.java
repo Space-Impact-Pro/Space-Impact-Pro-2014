@@ -15,9 +15,7 @@ public class Ship extends DynamicGameObject {
 	
 	int state;
 	int stateTime;
-	
-	
-	
+
 	
 	public Ship(float x, float y){
 		super(x,y, SHIP_WIDTH, SHIP_HEIGHT);
@@ -29,7 +27,7 @@ public class Ship extends DynamicGameObject {
 		bounds.x = position.x - bounds.width / 2;
 		bounds.y = position.y - bounds.height / 2;
 		
-		position.y += 0.01f;
+		position.y += World.scrollSpeed;
 		
 		stateTime += deltaTime;
 		if (position.x <0.5) position.x =0.5f;
@@ -37,7 +35,7 @@ public class Ship extends DynamicGameObject {
 	}
 	
 	public Bullet fire(){
-		Bullet b = new Bullet(position.x - SHIP_WIDTH /2, position.y + SHIP_HEIGHT /2);
+		Bullet b = new Bullet(position.x, position.y + SHIP_HEIGHT /2);
 		return b;
 	}
 	

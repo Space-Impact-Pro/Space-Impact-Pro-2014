@@ -32,9 +32,12 @@ public class World {
 	public static final int WORLD_STATE_GAME_OVER = 2;
 	public static final int WORLD_STATE_FINISHED = 3;
 	
-	public final List<Enemy> enemies;
+	public static float scrollSpeed;
+	
+	public List<Enemy> enemies;
 	public final List<Boss> boss;
 	public List<Bullet> bullets;
+	public static Level level;
 	
 	public final Ship ship;
 	public final WorldListener listener;
@@ -42,6 +45,7 @@ public class World {
 	public float distanceSoFar;
 	public int score;
 	public int state;
+	private float bossLocation;
 	private int bulletDelay=0;
 	
 	public World (WorldListener listener){
@@ -49,14 +53,16 @@ public class World {
 		this.listener=listener;
 		this.enemies = new ArrayList<Enemy>();
 		this.boss = new ArrayList<Boss>();
-		
-		this.enemies.add(new Enemy(5,5));
-		this.enemies.add(new Enemy(8,9));
-		
-		this.boss.add(new Boss(5,11));
-		
 		this.bullets = new ArrayList<Bullet>();
 		
+		level = new Level();
+		level.generateLevel();
+
+		enemies = level.getEnemy();
+		this.boss.add(level.getBoss());
+		bossLocation = level.getBossLocationY();
+		
+		scrollSpeed = 0.05f;
 		
 		this.score =0;
 		this.state = WORLD_STATE_WAITING;
@@ -77,6 +83,7 @@ public class World {
 			}
 			
 		}
+		
 	}
 	
 	public void updateShip(float deltaTime, float velocityX, float velocityY){

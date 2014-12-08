@@ -23,11 +23,12 @@ public class WorldRenderer {
 	
 	public void render(){
 		if (world.state == World.WORLD_STATE_RUNNING)	//scroll the camera up
-			cam.position.y += 0.01f;
+			cam.position.y += World.scrollSpeed;
 		
 		//boundary for the ship(movable parts)
 		if (world.ship.position.y < cam.position.y - FRUSTUM_HEIGHT/2) world.ship.position.y = cam.position.y - FRUSTUM_HEIGHT/2;
 		if (world.ship.position.y > cam.position.y + FRUSTUM_HEIGHT/2) world.ship.position.y = cam.position.y + FRUSTUM_HEIGHT/2;
+		if (cam.position.y > World.level.getBossLocationY() - 4f) World.scrollSpeed = 0; //stop scrolling after boss is reached
 		cam.update();
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();
@@ -57,9 +58,9 @@ public class WorldRenderer {
 //		place the ship on the gamescreen
 		float side = world.ship.velocity.x < 0 ? -1 : 1;
 		if (side < 0)
-			batch.draw(keyFrame, world.ship.position.x + 0.5f, world.ship.position.y - 0.5f, side * 1, 1);
+			batch.draw(keyFrame, world.ship.position.x + Ship.SHIP_WIDTH/2, world.ship.position.y - Ship.SHIP_HEIGHT/2, side * 1, 1);
 		else
-			batch.draw(keyFrame, world.ship.position.x - 0.5f, world.ship.position.y - 0.5f, side * 1, 1);
+			batch.draw(keyFrame, world.ship.position.x - Ship.SHIP_WIDTH/2, world.ship.position.y - Ship.SHIP_HEIGHT/2, side * 1, 1);
 		//batch.draw(keyFrame, side, side, side, side);
 	}
 	
@@ -70,9 +71,9 @@ public class WorldRenderer {
 			TextureRegion keyFrame = Assets.monsterRegion;
 			float side = enemy.velocity.x < 0 ? -1 : 1;
 			if (side < 0)
-				batch.draw(keyFrame, enemy.position.x + 0.5f, enemy.position.y - 0.5f, side * 1, 1);
+				batch.draw(keyFrame, enemy.position.x + Enemy.ENEMY_WIDTH/2, enemy.position.y - Enemy.ENEMY_HEIGHT/2, side * 1, 1);
 			else
-				batch.draw(keyFrame, enemy.position.x - 0.5f, enemy.position.y - 0.5f, side * 1, 1);
+				batch.draw(keyFrame, enemy.position.x - Enemy.ENEMY_WIDTH/2, enemy.position.y - Enemy.ENEMY_HEIGHT/2, side * 1, 1);
 		}
 	}
 	
@@ -81,7 +82,7 @@ public class WorldRenderer {
 		for (int i = 0; i < len; i++) {
 		Bullet bullet = world.bullets.get(i);
 		TextureRegion keyFrame = Assets.bulletRegion;
-			batch.draw(keyFrame, bullet.position.x + 0.5f, bullet.position.y - 0.5f, Bullet.BULLET_WIDTH, Bullet.BULLET_HEIGHT);
+			batch.draw(keyFrame, bullet.position.x - Bullet.BULLET_WIDTH /2, bullet.position.y - Bullet.BULLET_HEIGHT/2, Bullet.BULLET_WIDTH, Bullet.BULLET_HEIGHT);
 		}
 	}
 	
@@ -90,7 +91,7 @@ public class WorldRenderer {
 		TextureRegion keyFrame = Assets.monsterRegion;
 		if (len != 0){
 			Boss boss = world.boss.get(0);
-			batch.draw(keyFrame, boss.position.x+0.5f, boss.position.y+0.5f, 3, 3);
+			batch.draw(keyFrame, boss.position.x - Boss.ENEMY_WIDTH/2, boss.position.y - boss.ENEMY_HEIGHT/2, 3, 3);
 		}
 
 	}

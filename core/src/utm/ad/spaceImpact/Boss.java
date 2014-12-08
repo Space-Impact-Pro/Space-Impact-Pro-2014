@@ -7,7 +7,7 @@ public class Boss extends Enemy {
 	
 	public Boss(float x, float y){
 		super(x,y, ENEMY_WIDTH, ENEMY_HEIGHT);
-		hp = 100;
+		hp = 50;
 	}
 	
 	
