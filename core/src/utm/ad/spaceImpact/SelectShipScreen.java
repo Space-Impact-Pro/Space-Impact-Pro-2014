@@ -27,10 +27,10 @@ public class SelectShipScreen extends ScreenAdapter {
 		guiCam.position.set(320 / 2, 480 / 2, 0);
 		backBounds = new Rectangle(0, 0, 64, 64);
 		
-		ship1Bounds = new Rectangle(60, 200, 50, 50);
-		ship2Bounds = new Rectangle(60 + 120, 200, 50, 50);
-		ship3Bounds = new Rectangle(60, 120, 50, 50);
-		ship4Bounds = new Rectangle(60 + 120, 120, 50, 50);
+		ship1Bounds = new Rectangle(60, 190, 50, 50);
+		ship2Bounds = new Rectangle(60 + 120, 190, 50, 50);
+		ship3Bounds = new Rectangle(60, 75, 50, 50);
+		ship4Bounds = new Rectangle(60 + 120, 75, 50, 50);
 		
 		touchPoint = new Vector3();
 
@@ -84,6 +84,8 @@ public class SelectShipScreen extends ScreenAdapter {
 		game.batcher.disableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.backgroundRegionShipSelect, 0, 0, 320, 480);
+		game.batcher.enableBlending();
+		game.batcher.draw(Assets.arrowBack, 2, 2, 32, 32);
 		game.batcher.end();
 
 	}

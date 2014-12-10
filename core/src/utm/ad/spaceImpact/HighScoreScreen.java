@@ -78,7 +78,7 @@ public class HighScoreScreen extends ScreenAdapter {
 //			y += Assets.font.getLineHeight();
 //		}
 
-//		game.batcher.draw(Assets.arrow, 0, 0, 64, 64);
+		game.batcher.draw(Assets.arrowBack, 2, 2, 32, 32);
 		game.batcher.end();
 	}
 

@@ -16,6 +16,12 @@ public class Assets {
 //	public static Texture background2;
 //	public static TextureRegion backgroundRegion2
     
+	public static Texture arrows;
+	public static TextureRegion arrowLeft;
+	public static TextureRegion arrowRight;
+	public static TextureRegion arrowDown;
+	public static TextureRegion arrowUp;
+	public static TextureRegion arrowBack;
 	
 	public static Texture backgroundFirstMenu;
 	public static TextureRegion backgroundRegionFirstMenu;
@@ -58,6 +64,13 @@ public class Assets {
 	}
 	
 	public static void load () {
+		arrows = loadTexture("data/arrows.png");
+		arrowDown = new TextureRegion(arrows, 0, 96, 32,32);
+		arrowLeft = new TextureRegion(arrows, 31, 96, 32,32);
+		arrowRight = new TextureRegion(arrows, 63, 96, 32,32);
+		arrowUp = new TextureRegion(arrows, 95, 96, 32,32);
+		arrowBack = new TextureRegion(arrows, 0, 64, 32,32);
+		
 		backgroundFirstMenu = loadTexture("data/Guest.png");	//load image to texture
 		backgroundRegionFirstMenu = new TextureRegion(backgroundFirstMenu, 0, 0, 320, 480);		//get the region from the texture
 		
@@ -88,7 +101,7 @@ public class Assets {
 		loadShip(0);
 		
 		font = new BitmapFont(Gdx.files.internal("font/calibri.fnt"), Gdx.files.internal("font/calibri.png"), false);
-		
+		font.setScale(0.75f, 0.75f);
 		///// ship implementation in game screen////  --->> moved to method below
 //		ship_image = loadTexture("data/ship_box.png");
 //		ship_imageRegion = new TextureRegion(ship_image,  0, 0, 32, 32);

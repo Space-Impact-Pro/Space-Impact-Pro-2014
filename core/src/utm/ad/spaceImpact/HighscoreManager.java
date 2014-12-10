@@ -1,6 +1,9 @@
 package utm.ad.spaceImpact;
 import java.util.*;
 import java.io.*;
+import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Gdx;
+
 public class HighscoreManager 
 {
 	// An arraylist of the type "score" we will use to work with 
@@ -8,7 +11,7 @@ public class HighscoreManager
     private ArrayList<Score> scores;
 
     // The name of the file where the highscores will be saved
-    private static final String HIGHSCORE_FILE = "scores.dat";
+    private static final String HIGHSCORE_FILE = Gdx.files.getLocalStoragePath()+"scores.dat";
 
     //Initialising an in and outputStream for working with the file
     ObjectOutputStream outputStream = null;
@@ -18,6 +21,7 @@ public class HighscoreManager
     public HighscoreManager() {
         //initialising the scores-arraylist
         scores = new ArrayList<Score>();
+        System.out.println();
     }
     //////////////////////////
     private void sort() {

@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
@@ -44,13 +43,14 @@ public class GameScreen extends ScreenAdapter {
 	Rectangle moveDownRegion;
 	
 	private String name;
+	private boolean cancelled = false;
 	private boolean doneInput;
-	private boolean done = false;
+	private boolean input;
 
 
 	public GameScreen (SpaceImpactPro game) {
 		this.game = game;
-		done = false;
+
 		
 		state = GAME_READY;
 
@@ -62,15 +62,20 @@ public class GameScreen extends ScreenAdapter {
 		world = new World(worldListener);
 		renderer = new WorldRenderer(game.batcher, world);
 		
-		moveLeftRegion = new Rectangle(0,0, 40,40);
-		moveRightRegion = new Rectangle(320-40,0, 40 ,40);
+		moveLeftRegion = new Rectangle(320-92, 10, 32, 96);
 		
-		moveUpRegion = new Rectangle(40,80,160,300);
-		moveDownRegion = new Rectangle(40,0,160,80);
+		moveRightRegion = new Rectangle(320-32, 10, 32, 96);
+		
+		moveUpRegion = new Rectangle(320-60-32, 10+64, 96, 32);
+		moveDownRegion = new Rectangle(320-60-32, 10, 96, 32);
+		
 		
 		backBounds = new Rectangle(300, 460 , 20, 20);
 		
 		score = 0;
+		input = false;
+		
+		
 
 	}
 
@@ -123,7 +128,7 @@ public class GameScreen extends ScreenAdapter {
 		world.ship.state = 0;
 //		if (appType == ApplicationType.Android)
 //		{
-		
+			world.ship.state = Ship.SHIP_STATE_FIRING;
 		
 		
 			boolean activeTouch = false;
@@ -148,14 +153,14 @@ public class GameScreen extends ScreenAdapter {
 //					state = GAME_PAUSED;
 //					return;
 					velocityY = 5f;
-					moveUpRegion.set(40,posY,240,470-posY);
+//					moveUpRegion.set(40,posY,240,470-posY);
 				}
 				if (moveDownRegion.contains(touchPoint.x, touchPoint.y)) {//////6.11/////
 //					Assets.playSound(Assets.clickSound);
 //					state = GAME_PAUSED;
 //					return;
 					velocityY = -5f;
-					moveDownRegion.set(40,0,240,posY);
+//					moveDownRegion.set(40,0,240,posY);
 				}
 				
 				activeTouch = true;
@@ -189,30 +194,32 @@ public class GameScreen extends ScreenAdapter {
 	}
 	
 	private void updateGameOver () {//////6.11/////
-		if (Gdx.input.justTouched()) {
-					
+		if (Gdx.input.justTouched() && !input) {
+
+			input = true;
 			String title = "Name";
 			String initialText = "Name here";
+			
 			//////////////////////////////////////////////////////////////////////
 			Gdx.input.getTextInput(new TextInputListener() {  //get the name input
-				
-				String message;
-				
-	            
+					            
 	            @Override
 	            public void input(String text) {
 	            name = text;
 	            doneInput =true;
+	            cancelled = false;
 	            }
 	           
 	            @Override
 	            public void canceled() {
 	            doneInput =true;
+	            cancelled = true;
 	            }
 			}, title, initialText);
 				
 			}
 			if (doneInput){
+				if (!cancelled)
 				SpaceImpactPro.highscore.addScore(name, (int)score);  //add name to highscore
 				doneInput = false;       
 				Timer.schedule(new Task(){		//delay the screen switch for 1 second
@@ -222,63 +229,17 @@ public class GameScreen extends ScreenAdapter {
 						
 				    }
 				},0.4f);
-				
 			}
-		//if (Gdx.input.justTouched()) {
-		
-//			if(!done){
-//				done = true;
-//				String title = "Name";
-//				String initialText = "Name here";
-//				
-//				Gdx.input.getTextInput(new TextInputListener() {	//get the name
-//					
-//					String message;
-//					
-//		            
-//		            @Override
-//		            public void input(String text) {
-//		            name = text;
-//		            doneInput =true;
-//		            }
-//		           
-//		            @Override
-//		            public void canceled() {
-//		            doneInput =true;
-//		            }
-//		     }, title, initialText);
-//			
-//		}
-//		//}
-//		if (doneInput){			//add name to highscore
-//			
-//			SpaceImpactPro.highscore.addScore(name, (int)score);
-//			if (Gdx.input.justTouched()){
-//			game.setScreen(new MainMenuScreen(game));
-//	    	
-//			//Timer.schedule(new Task(){
-//			    //@Override
-//			    //public void run() {
-//			    	
-//			    }
-//			doneInput = false;
-//			//}, 2);
-//			
-			
-//		}
 	}
 	
 	private void updateFinished(){
-		if (Gdx.input.justTouched()) {
-			
+		if (Gdx.input.justTouched() && !input) {
+
 			String title = "Name";
 			String initialText = "Name here";
 			//////////////////////////////////////////////////////////////////////
 			Gdx.input.getTextInput(new TextInputListener() {  //get the name input
-				
-				String message;
-				
-	            
+			
 	            @Override
 	            public void input(String text) {
 	            name = text;
@@ -290,23 +251,35 @@ public class GameScreen extends ScreenAdapter {
 	            doneInput =true;
 	            }
 			}, title, initialText);
-				
-			}
-			if (doneInput){
-				SpaceImpactPro.highscore.addScore(name, (int)score);  //add name to highscore
-				doneInput = false;       
-				Timer.schedule(new Task(){		//delay the screen switch for 1 second
-				    @Override
-				    public void run() {
-						game.setScreen(new MainMenuScreen(game));
-						
-				    }
-				},1);
-				
-			}
+		}
+		if (doneInput){
+			SpaceImpactPro.highscore.addScore(name, (int)score);  //add name to highscore
+			doneInput = false;       
+			Timer.schedule(new Task(){		//delay the screen switch for 1 second
+			    @Override
+			    public void run() {
+					game.setScreen(new MainMenuScreen(game));
+					
+			    }
+			},0.8f);
+			
+		}
 	}
 	
 	private void presentGameRunning(){
+		game.batcher.draw(Assets.arrowUp, 320-60, 10+60, 32, 32);
+		game.batcher.draw(Assets.arrowDown, 320-60, 10, 32, 32);
+		game.batcher.draw(Assets.arrowLeft, 320-92, 10+32, 32, 32);
+		game.batcher.draw(Assets.arrowRight, 320-30, 10+32, 32, 32);
+//		Testing Region
+//		Test.setProjectionMatrix(guiCam.combined);
+//		Test.begin(ShapeType.Line);
+//		Test.rect(320-92, 10, 32, 96);
+//		Test.rect(320-32, 10, 32, 96);
+//		
+//		Test.rect(320-60-32, 10+64, 96, 32);
+//		Test.rect(320-60-32, 10, 96, 32);
+//		Test.end();
 	}
 	
 	private void presentGameOver(){//////6.11///// present the game over item
@@ -346,14 +319,6 @@ public class GameScreen extends ScreenAdapter {
 		}
 		
 		game.batcher.end();
-		
-		/*
-		game.batcher.setProjectionMatrix(guiCam.combined);
-		game.batcher.disableBlending();
-		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundRegionGameScreen, 0, 0, 320, 480);
-		game.batcher.end();
-		*/
 	}
 	
 	
